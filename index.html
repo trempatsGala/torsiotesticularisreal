@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ABSOLUT PRIME TESTICLETORÇADES</title>
+    <style>
+        :root {
+            --p: #7C3AED; --p2: #A78BFA;
+            --g: #F59E0B; --pk: #EC4899;
+            --bg: #060609;
+        }
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: var(--bg); color: #fff; font-family: 'Arial Black', Impact, sans-serif; overflow-x: hidden; cursor: none; }
+
+        /* GRAIN */
+        .grain { position: fixed; inset: 0; pointer-events: none; z-index: 9980; opacity: .32;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.75' numOctaves='4' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='.12'/%3E%3C/svg%3E");
+            animation: gr .25s steps(3) infinite; }
+        @keyframes gr { 0%{transform:translate(0,0)} 33%{transform:translate(-4%,-6%)} 66%{transform:translate(6%,3%)} 100%{transform:translate(-2%,5%)} }
+
+        #stars { position: fixed; inset: 0; pointer-events: none; z-index: 0; }
+        .cursor { position: fixed; z-index: 9999; pointer-events: none; transform: translate(-50%,-50%); font-size: 22px; transition: font-size .12s; }
+        .cursor.big { font-size: 36px; }
+
+        /* CURTAIN */
+        .curtain { position: fixed; inset: 0; z-index: 9500; background: var(--bg);
+            display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 1.8rem;
+            transition: opacity .9s ease, visibility .9s; }
+        .curtain.out { opacity: 0; visibility: hidden; }
+        .curt-egg { font-size: 4rem; animation: cE .55s ease infinite alternate; }
+        @keyframes cE { from{transform:scale(.8) rotate(-10deg)} to{transform:scale(1.1) rotate(10deg)} }
+        .curt-lbl { font-size: .58rem; letter-spacing: .55em; color: rgba(255,255,255,.28); text-transform: uppercase; }
+        .curt-bg { width: 260px; height: 2px; background: rgba(255,255,255,.07); border-radius: 1px; overflow: hidden; }
+        .curt-bar { height: 100%; width: 0; background: linear-gradient(90deg,var(--p),var(--pk),var(--g)); transition: width 1.8s cubic-bezier(.4,0,.2,1); border-radius: 1px; }
+
+        /* NAV */
+        nav { position: fixed; top: 0; left: 0; right: 0; z-index: 500;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.1rem 2.5rem;
+            background: rgba(6,6,9,.78); backdrop-filter: blur(20px) saturate(1.4);
+            border-bottom: 1px solid rgba(124,58,237,.18); }
+        .nav-l { font-size: .58rem; letter-spacing: .5em; color: rgba(245,158,11,.7); text-transform: uppercase; }
+        .nav-pill { font-size: .62rem; letter-spacing: .14em; text-transform: uppercase;
+            color: var(--pk); border: 1px solid var(--pk); padding: .38rem 1.1rem; border-radius: 50px; text-decoration: none; transition: background .2s, color .2s; }
+        .nav-pill:hover { background: var(--pk); color: #fff; }
+
+        /* HERO */
+        .hero { min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center;
+            position: relative; overflow: hidden;
+            background: radial-gradient(ellipse 100% 80% at 50% 55%,#130035 0%,var(--bg) 68%);
+            text-align: center; padding: 4rem 1.5rem; }
+        .hero::before { content:''; position:absolute; inset:-40%;
+            background: conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(124,58,237,.06) 45deg,transparent 90deg,rgba(236,72,153,.06) 180deg,transparent 225deg,rgba(245,158,11,.04) 300deg,transparent 360deg);
+            animation: spin 28s linear infinite; }
+        .hero::after { content:''; position:absolute; width:520px; height:520px; border-radius:50%;
+            background: radial-gradient(circle,rgba(124,58,237,.22) 0%,transparent 68%);
+            animation: glowP 7s ease infinite; }
+        @keyframes spin { to{transform:rotate(360deg)} }
+        @keyframes glowP { 0%,100%{transform:scale(1);opacity:.55} 50%{transform:scale(1.4);opacity:1} }
+        .hero-inner { position: relative; z-index: 1; }
+
+        .ap-badge { display:flex; align-items:center; gap:1.2rem; justify-content:center; margin-bottom:2.8rem; animation:fadeD 1s ease .4s both; }
+        .ap-line { flex:1; max-width:90px; height:1px; }
+        .ap-line.left  { background: linear-gradient(90deg,transparent,var(--g)); }
+        .ap-line.right { background: linear-gradient(90deg,var(--g),transparent); }
+        .ap-absolut { font-size:.68rem; letter-spacing:.65em; color:var(--g); text-transform:uppercase; }
+        .ap-prime   { font-size:1.05rem; letter-spacing:.4em; color:rgba(255,255,255,.85); text-transform:uppercase; margin-top:-.1rem; }
+
+        .hero-title { animation: titleRev 1.4s cubic-bezier(.16,1,.3,1) .9s both; }
+        @keyframes titleRev { from{opacity:0;transform:scale(.65) translateY(25px);filter:blur(25px)} to{opacity:1;transform:scale(1) translateY(0);filter:blur(0)} }
+        .t-line { display:block; font-size:clamp(4.5rem,17vw,13rem); font-weight:900; text-transform:uppercase; line-height:.85; letter-spacing:-.03em; }
+        .t-filled { background:linear-gradient(135deg,#A78BFA 0%,#EC4899 45%,#F59E0B 100%); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; filter:drop-shadow(0 0 55px rgba(124,58,237,.6)); position:relative; display:inline-block; }
+        .t-filled::before,.t-filled::after { content:attr(data-t); position:absolute; top:0; left:0; background:inherit; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .t-filled::before { animation:gA 5s infinite linear; clip-path:polygon(0 0,100% 0,100% 38%,0 38%); filter:hue-rotate(90deg); opacity:.7; }
+        .t-filled::after  { animation:gB 5s infinite linear; clip-path:polygon(0 62%,100% 62%,100% 100%,0 100%); filter:hue-rotate(-90deg); opacity:.7; }
+        @keyframes gA { 0%,89%,100%{transform:translateX(0);opacity:0} 91%{transform:translateX(-5px) skewX(-3deg);opacity:.7} 93%{transform:translateX(5px) skewX(3deg);opacity:.7} 95%{transform:translateX(-2px);opacity:.7} 97%{opacity:0} }
+        @keyframes gB { 0%,86%,100%{transform:translateX(0);opacity:0} 88%{transform:translateX(5px) skewX(3deg);opacity:.7} 91%{transform:translateX(-5px) skewX(-3deg);opacity:.7} 94%{transform:translateX(2px);opacity:.7} 96%{opacity:0} }
+        .t-outline { -webkit-text-stroke:2px rgba(255,255,255,.22); color:transparent; }
+        .hero-egg { position:relative; z-index:1; font-size:3rem; display:block; margin:1.6rem auto 0; animation:floatE 4s ease-in-out infinite 2.6s; }
+        @keyframes floatE { 0%,100%{transform:translateY(0) rotate(-8deg) scale(1)} 50%{transform:translateY(-20px) rotate(8deg) scale(1.08)} }
+        .hero-tag { position:relative; z-index:1; margin-top:1.4rem; font-size:clamp(.65rem,1.7vw,.9rem); letter-spacing:.4em; color:rgba(255,255,255,.35); text-transform:uppercase; animation:fadeU 1s ease 2.8s both; }
+        .scroll-hint { position:absolute; bottom:2rem; left:50%; transform:translateX(-50%); z-index:1; font-size:.58rem; letter-spacing:.42em; text-transform:uppercase; color:rgba(245,158,11,.5); text-align:center; animation:sH 2.5s ease infinite; }
+        .scroll-hint::after { content:'\A▼'; white-space:pre; font-size:1.1rem; display:block; margin-top:.3rem; }
+        @keyframes sH { 0%,100%{opacity:.5;transform:translateX(-50%) translateY(0)} 50%{opacity:1;transform:translateX(-50%) translateY(8px)} }
+        @keyframes fadeD { from{opacity:0;transform:translateY(-14px)} to{opacity:1;transform:translateY(0)} }
+        @keyframes fadeU { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+
+        /* MARQUEE */
+        .mq-wrap { overflow:hidden; position:relative; z-index:2; border-top:1px solid rgba(124,58,237,.28); border-bottom:1px solid rgba(124,58,237,.28); background:rgba(124,58,237,.06); }
+        .mq-track { display:flex; white-space:nowrap; animation:mqS 22s linear infinite; }
+        .mq-track:hover { animation-play-state:paused; }
+        .mq-item { flex-shrink:0; font-size:.7rem; letter-spacing:.35em; text-transform:uppercase; color:var(--p2); padding:1.1rem 2rem; }
+        .mq-item.g { color:var(--g); } .mq-item.pk { color:var(--pk); }
+        @keyframes mqS { from{transform:translateX(0)} to{transform:translateX(-50%)} }
+
+        /* SECTION COMMONS */
+        .s-eyebrow { font-size:.6rem; letter-spacing:.55em; color:var(--g); text-transform:uppercase; opacity:.65; margin-bottom:.8rem; }
+        .s-h2 { font-size:clamp(2.2rem,5.5vw,4.2rem); text-transform:uppercase; text-align:center; line-height:.94; }
+        .h2-p { background:linear-gradient(135deg,var(--p2),var(--pk)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .s-rule { width:50px; height:2px; background:linear-gradient(90deg,var(--p),var(--pk)); border-radius:2px; margin:1.3rem auto 3rem; }
+
+        /* MANIFESTO */
+        .manifesto { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:7rem 2rem; background:linear-gradient(180deg,var(--bg) 0%,#0d0025 50%,var(--bg) 100%); }
+        .m-inner { max-width:820px; width:100%; text-align:center; }
+        .m-line { display:block; font-size:clamp(2rem,5.5vw,3.8rem); font-weight:900; text-transform:uppercase; line-height:1.12; opacity:0; transform:translateX(-50px); transition:opacity .75s ease,transform .75s ease; }
+        .m-line.v { opacity:1; transform:translateX(0); }
+        .m-accent { background:linear-gradient(135deg,var(--p2),var(--pk)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .m-gold { background:linear-gradient(135deg,var(--g),#fff8d0); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .m-out { -webkit-text-stroke:2px rgba(255,255,255,.25); color:transparent; }
+        .m-big { font-size:clamp(3rem,8vw,6rem) !important; }
+        .m-rule { width:1px; height:55px; background:linear-gradient(180deg,transparent,var(--p),transparent); margin:2rem auto; opacity:0; transition:opacity .7s ease; }
+        .m-rule.v { opacity:1; }
+
+        /* LA GRAN PICADA */
+        .picada { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            padding:4rem 2rem; position:relative; overflow:hidden; text-align:center;
+            background:radial-gradient(ellipse 80% 60% at 50% 50%,#1c0800 0%,#0a0200 40%,var(--bg) 100%); }
+        .picada::before { content:''; position:absolute; inset:-30%;
+            background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(245,158,11,.06) 60deg,transparent 120deg,rgba(236,72,153,.04) 200deg,transparent 260deg,rgba(245,158,11,.05) 320deg,transparent 360deg);
+            animation:spin 35s linear infinite; }
+        .picada-glow { position:absolute; width:700px; height:700px; border-radius:50%;
+            background:radial-gradient(circle,rgba(245,158,11,.18) 0%,transparent 62%);
+            animation:glowP 6s ease infinite; pointer-events:none; }
+        .picada-inner { position:relative; z-index:1; }
+        .picada-la { font-size:clamp(.75rem,2.2vw,1.1rem); letter-spacing:.7em; color:rgba(245,158,11,.55); text-transform:uppercase; margin-bottom:1.5rem; }
+        .picada-duck { font-size:clamp(6rem,20vw,13rem); display:block; margin:0 auto 1.2rem;
+            animation:dkF 3.5s ease-in-out infinite;
+            filter:drop-shadow(0 0 50px rgba(245,158,11,.7)) drop-shadow(0 0 100px rgba(245,158,11,.3)); }
+        @keyframes dkF { 0%,100%{transform:translateY(0) rotate(-5deg) scale(1)} 50%{transform:translateY(-24px) rotate(5deg) scale(1.06)} }
+        .picada-title { display:block; font-size:clamp(4rem,16vw,12rem); font-weight:900; text-transform:uppercase; line-height:.82; letter-spacing:-.03em; }
+        .picada-filled { background:linear-gradient(135deg,#FFD060 0%,#FF7A00 50%,#EC4899 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            filter:drop-shadow(0 0 55px rgba(245,158,11,.55)); position:relative; display:block; }
+        .picada-filled::before,.picada-filled::after { content:attr(data-t); position:absolute; top:0; left:0; background:inherit; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .picada-filled::before { animation:gA 6s infinite linear; clip-path:polygon(0 0,100% 0,100% 40%,0 40%); filter:hue-rotate(40deg); opacity:.65; }
+        .picada-filled::after  { animation:gB 6s infinite linear; clip-path:polygon(0 62%,100% 62%,100% 100%,0 100%); filter:hue-rotate(-40deg); opacity:.65; }
+        .picada-outline { -webkit-text-stroke:2px rgba(255,180,40,.28); color:transparent; display:block; }
+        .picada-rule { display:flex; align-items:center; gap:1.5rem; margin:2.5rem auto; max-width:480px; }
+        .picada-rule-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(245,158,11,.45),transparent); }
+        .picada-gem { color:var(--g); font-size:.9rem; }
+        .picada-desc { font-size:clamp(.9rem,2vw,1.12rem); color:rgba(255,255,255,.48); font-family:Georgia,serif; font-weight:normal; line-height:1.95; max-width:460px; margin:0 auto; }
+        .picada-desc strong { color:rgba(255,190,50,.85); font-family:'Arial Black',sans-serif; }
+        .picada-badge { display:inline-block; margin-top:2.2rem; padding:.5rem 2rem; border-radius:50px; border:1px solid rgba(245,158,11,.32); background:rgba(245,158,11,.06); font-size:.62rem; letter-spacing:.35em; text-transform:uppercase; color:rgba(245,158,11,.65); }
+
+        /* ════════ EL TRONCO — ADORACIÓ ════════ */
+        .tronco-sec { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center;
+            padding:4rem 2rem; position:relative; overflow:hidden; text-align:center;
+            background:radial-gradient(ellipse 70% 55% at 50% 50%,#150800 0%,#060200 45%,var(--bg) 100%); }
+        .tronco-sec::before { content:''; position:absolute; inset:-30%;
+            background:conic-gradient(from 0deg at 50% 50%,transparent 0deg,rgba(180,90,20,.05) 60deg,transparent 120deg,transparent 300deg,rgba(180,90,20,.04) 340deg,transparent 360deg);
+            animation:spin 40s linear infinite reverse; }
+        .tronco-glow { position:absolute; width:550px; height:550px; border-radius:50%;
+            background:radial-gradient(circle,rgba(150,70,8,.22) 0%,transparent 65%);
+            animation:glowP 8s ease infinite; pointer-events:none; }
+        .tronco-inner { position:relative; z-index:1; }
+        .tronco-eyebrow { font-size:clamp(.65rem,1.8vw,.85rem); letter-spacing:.65em; color:rgba(200,120,40,.55); text-transform:uppercase; margin-bottom:1.2rem; }
+        .tronco-candles { font-size:clamp(1.5rem,4vw,2.2rem); letter-spacing:.8rem; margin-bottom:.8rem; opacity:.6; }
+        .tronco-log { font-size:clamp(6rem,22vw,14rem); display:block; margin:0 auto .8rem;
+            animation:logF 5s ease-in-out infinite;
+            filter:drop-shadow(0 0 45px rgba(150,70,8,.65)) drop-shadow(0 0 90px rgba(150,70,8,.25)); }
+        @keyframes logF { 0%,100%{transform:translateY(0) rotate(-3deg) scale(1)} 50%{transform:translateY(-18px) rotate(3deg) scale(1.04)} }
+        .tronco-title { display:block; font-size:clamp(4rem,17vw,12rem); font-weight:900; text-transform:uppercase; line-height:.85; letter-spacing:-.02em;
+            background:linear-gradient(135deg,#E09040 0%,#9B5010 50%,#6B2A00 100%);
+            -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text;
+            filter:drop-shadow(0 0 45px rgba(150,70,8,.5)); }
+        .tronco-sub { font-size:clamp(.8rem,2.2vw,1.15rem); letter-spacing:.38em; color:rgba(200,120,40,.4); text-transform:uppercase; margin:.8rem 0 2.5rem; }
+        .tronco-rule { display:flex; align-items:center; gap:1.2rem; margin:0 auto 2.5rem; max-width:420px; }
+        .tronco-rule-line { flex:1; height:1px; background:linear-gradient(90deg,transparent,rgba(150,70,8,.5),transparent); }
+        .tronco-gem { color:#C8873A; font-size:.85rem; }
+        .tronco-prayer { font-size:clamp(.92rem,2.1vw,1.12rem); font-family:Georgia,serif; font-style:italic; font-weight:normal; color:rgba(255,255,255,.4); line-height:2.1; max-width:420px; margin:0 auto; }
+        .tronco-prayer strong { color:rgba(210,140,55,.85); font-family:'Arial Black',sans-serif; font-style:normal; }
+        .tronco-badge { display:inline-block; margin-top:2.5rem; padding:.5rem 2rem; border-radius:50px; border:1px solid rgba(150,70,8,.3); background:rgba(150,70,8,.06); font-size:.58rem; letter-spacing:.35em; text-transform:uppercase; color:rgba(200,120,40,.6); }
+
+        /* ════════ GAME SECTION ════════ */
+        .game-sec { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:7rem 2rem; background:linear-gradient(180deg,var(--bg) 0%,#0d0025 50%,var(--bg) 100%); }
+        .game-sec .s-h2 { background:linear-gradient(135deg,var(--g),var(--p2)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .game-instr { font-size:.85rem; color:rgba(255,255,255,.45); font-family:Georgia,serif; font-weight:normal; text-align:center; max-width:480px; line-height:1.7; margin-bottom:1.8rem; }
+
+        /* HUD */
+        .game-hud { display:flex; gap:2rem; justify-content:center; align-items:stretch; margin-bottom:1rem; max-width:700px; width:100%; flex-wrap:wrap; }
+        .hud-box { text-align:center; padding:.6rem 1.4rem; background:rgba(124,58,237,.08); border:1px solid rgba(124,58,237,.22); border-radius:10px; min-width:100px; }
+        .hud-lbl { font-size:.52rem; letter-spacing:.35em; color:rgba(255,255,255,.4); text-transform:uppercase; display:block; margin-bottom:.25rem; }
+        .hud-val { font-size:1.5rem; font-weight:900; color:#fff; display:block; line-height:1; }
+        .hud-val.score { background:linear-gradient(135deg,var(--p2),var(--pk)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; }
+        .hud-val.timer { color:var(--g); }
+
+        /* Canvas wrapper */
+        .cv-wrap { max-width:700px; width:100%; border-radius:16px; overflow:hidden; border:1px solid rgba(124,58,237,.3); box-shadow:0 0 60px rgba(124,58,237,.15); touch-action:none; }
+        #gameCanvas { display:block; width:100%; }
+        .game-tip { margin-top:1rem; font-size:.6rem; letter-spacing:.3em; color:rgba(255,255,255,.22); text-transform:uppercase; text-align:center; }
+        /* Mobile buttons */
+        .game-dpad { display:none; gap:1.2rem; justify-content:center; margin-top:1.2rem; }
+        @media(pointer:coarse){ .game-dpad { display:flex; } }
+        .dpad-btn { width:90px; height:65px; border-radius:14px; border:1px solid rgba(124,58,237,.45); background:rgba(124,58,237,.12); color:rgba(255,255,255,.8); font-size:1.8rem; cursor:pointer; -webkit-tap-highlight-color:transparent; user-select:none; display:flex; align-items:center; justify-content:center; }
+        .dpad-btn:active { background:rgba(124,58,237,.45); transform:scale(.94); }
+
+        /* STATS */
+        .stats { padding:7rem 2rem; background:linear-gradient(180deg,var(--bg) 0%,#0d0025 50%,var(--bg) 100%); display:flex; flex-direction:column; align-items:center; }
+        .stats-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:1.5rem; max-width:900px; width:100%; margin-top:2.5rem; }
+        .s-box { text-align:center; padding:2.2rem 1rem; background:rgba(124,58,237,.06); border:1px solid rgba(124,58,237,.18); border-radius:18px; transition:border-color .3s,transform .3s; }
+        .s-box:hover { border-color:var(--g); transform:scale(1.04); }
+        .s-num { font-size:clamp(2.5rem,6vw,4rem); font-weight:900; background:linear-gradient(135deg,var(--p2),var(--pk)); -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; display:block; line-height:1; }
+        .s-lbl { font-size:.68rem; letter-spacing:.2em; text-transform:uppercase; color:rgba(255,255,255,.38); margin-top:.8rem; line-height:1.6; }
+
+        /* VOTE */
+        .vote { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; text-align:center; padding:6rem 2rem; background:radial-gradient(ellipse 85% 70% at 50% 50%,#1c0042 0%,var(--bg) 68%); position:relative; overflow:hidden; }
+        .vote-glow { position:absolute; inset:0; pointer-events:none; background:radial-gradient(ellipse 65% 45% at 50% 50%,rgba(124,58,237,.18),transparent 70%); animation:vgP 5s ease infinite; }
+        @keyframes vgP { 0%,100%{opacity:.6;transform:scale(1)} 50%{opacity:1;transform:scale(1.35)} }
+        .vote-inner { position:relative; z-index:1; }
+        .v-eyebrow { font-size:.58rem; letter-spacing:.6em; color:var(--g); text-transform:uppercase; opacity:.65; margin-bottom:2rem; }
+        .v-title { font-size:clamp(3rem,12vw,9.5rem); font-weight:900; text-transform:uppercase; line-height:.87; background:linear-gradient(135deg,#A78BFA,#EC4899,#F59E0B,#EC4899,#A78BFA); background-size:300% 300%; -webkit-background-clip:text; -webkit-text-fill-color:transparent; background-clip:text; animation:gMv 4s ease infinite; margin-bottom:2rem; }
+        @keyframes gMv { 0%,100%{background-position:0% 50%} 50%{background-position:100% 50%} }
+        .v-desc { font-size:clamp(.9rem,2vw,1.1rem); color:rgba(255,255,255,.48); font-family:Georgia,serif; font-weight:normal; max-width:420px; line-height:1.9; margin:0 auto 3rem; }
+        .v-btn { display:inline-block; padding:1.4rem 4.5rem; font-size:1.05rem; font-weight:900; letter-spacing:.15em; text-transform:uppercase; background:linear-gradient(135deg,var(--p),var(--pk)); color:#fff; border:none; border-radius:60px; cursor:pointer; box-shadow:0 0 45px rgba(124,58,237,.4),0 0 90px rgba(124,58,237,.15); transition:transform .3s,box-shadow .3s; position:relative; overflow:hidden; }
+        .v-btn::before { content:''; position:absolute; inset:0; background:linear-gradient(135deg,rgba(255,255,255,.12),transparent); border-radius:60px; }
+        .v-btn:hover { transform:scale(1.06); box-shadow:0 0 65px rgba(236,72,153,.65),0 0 130px rgba(124,58,237,.3); }
+        .v-btn:active { transform:scale(.97); }
+        .v-footer { margin-top:4rem; font-size:.58rem; letter-spacing:.35em; color:rgba(255,255,255,.14); text-transform:uppercase; line-height:2.4; }
+
+        /* REVEAL */
+        .rv { opacity:0; transform:translateY(32px); transition:opacity .85s ease,transform .85s ease; }
+        .rv.v { opacity:1; transform:translateY(0); }
+        .d1{transition-delay:.05s} .d2{transition-delay:.15s} .d3{transition-delay:.25s} .d4{transition-delay:.35s}
+
+        @media(max-width:640px) {
+            nav{padding:.8rem 1.1rem;}
+            .t-line{font-size:clamp(4rem,20vw,7rem);}
+            .cards{flex-direction:column;align-items:center;}
+            .card{width:100%;max-width:340px;}
+            .stats-grid{grid-template-columns:1fr 1fr;}
+            .v-btn{padding:1.2rem 2.5rem;font-size:.9rem;}
+            .game-hud{gap:1rem;}
+            .hud-box{min-width:80px;padding:.5rem .8rem;}
+        }
+    </style>
+</head>
+<body>
+
+<div class="grain"></div>
+<div class="cursor" id="cur">🥚</div>
+<canvas id="stars"></canvas>
+
+<!-- CURTAIN -->
+<div class="curtain" id="curtain">
+    <div class="curt-egg">🥚</div>
+    <div class="curt-lbl">Carregant llegenda...</div>
+    <div class="curt-bg"><div class="curt-bar" id="cbar"></div></div>
+</div>
+
+<!-- NAV -->
+<nav>
+    <span class="nav-l">Trempats · UPF · 25-26</span>
+    <a href="#vota" class="nav-pill">Vota ara 🥚</a>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+    <div class="hero-inner">
+        <div class="ap-badge">
+            <div class="ap-line left"></div>
+            <div><div class="ap-absolut">Absolut</div><div class="ap-prime">Prime</div></div>
+            <div class="ap-line right"></div>
+        </div>
+        <div class="hero-title">
+            <span class="t-line t-filled" data-t="Testicle">Testicle</span>
+            <span class="t-line t-outline">Torçades</span>
+        </div>
+        <span class="hero-egg">🥚</span>
+        <p class="hero-tag">Generació 25-26 · Colla Trempats · UPF</p>
+    </div>
+    <div class="scroll-hint">Descobreix-te</div>
+</section>
+
+<!-- MARQUEE -->
+<div class="mq-wrap">
+    <div class="mq-track" id="mq"></div>
+</div>
+
+<!-- ══ MANIFESTO ══ -->
+<section class="manifesto">
+    <p class="s-eyebrow rv">// El Manifesto</p>
+    <div class="m-inner">
+        <span class="m-line"          style="transition-delay:.00s">No som una</span>
+        <span class="m-line m-accent" style="transition-delay:.12s">generació qualsevol.</span>
+        <div  class="m-rule"          style="transition-delay:.24s"></div>
+        <span class="m-line"          style="transition-delay:.36s">Som els que van</span>
+        <span class="m-line m-gold"   style="transition-delay:.48s">jugar el joc.</span>
+        <div  class="m-rule"          style="transition-delay:.60s"></div>
+        <span class="m-line m-out"    style="transition-delay:.72s">I el vam</span>
+        <span class="m-line m-accent m-big" style="transition-delay:.84s">GUANYAR.</span>
+    </div>
+</section>
+
+<!-- ══ LA GRAN PICADA DE PATO ══ -->
+<section class="picada">
+    <div class="picada-glow"></div>
+    <div class="picada-inner">
+        <p class="picada-la rv">La Gran</p>
+        <span class="picada-duck rv">🦆</span>
+        <div class="rv">
+            <span class="picada-title picada-filled" data-t="PICADA">PICADA</span>
+            <span class="picada-title picada-outline">DE PATO</span>
+        </div>
+        <div class="picada-rule rv">
+            <div class="picada-rule-line"></div>
+            <span class="picada-gem">⬦</span>
+            <div class="picada-rule-line"></div>
+        </div>
+        <p class="picada-desc rv">
+            El <strong>Mango</strong>. La resposta.<br>
+            Un moviment que ningú esperava.<br>
+            Una picadura que va paralitzar tota la sala<br>
+            i va fer història per sempre.
+        </p>
+        <span class="picada-badge rv">★ Moment llegendari &nbsp;·&nbsp; Tronco o Huevo</span>
+    </div>
+</section>
+
+<!-- ══ EL TRONCO ══ -->
+<section class="tronco-sec">
+    <div class="tronco-glow"></div>
+    <div class="tronco-inner">
+        <p class="tronco-eyebrow rv">// L'Adoració</p>
+        <div class="tronco-candles rv">🕯️ &nbsp; 🕯️ &nbsp; 🕯️</div>
+        <span class="tronco-log rv">🪵</span>
+        <span class="tronco-title rv">EL TRONCO</span>
+        <p class="tronco-sub rv">L'Etern Inesperat</p>
+        <div class="tronco-rule rv">
+            <div class="tronco-rule-line"></div>
+            <span class="tronco-gem">⬦</span>
+            <div class="tronco-rule-line"></div>
+        </div>
+        <p class="tronco-prayer rv">
+            No el vam triar.<br>
+            <strong>Ell ens va triar a nosaltres.</strong><br><br>
+            Sempre present. Sempre inesperat.<br>
+            El <strong>Tronco</strong> és l'equilibri de l'univers.<br><br>
+            <em>"Oh, Tronco, sàpies on ets,<br>
+            que et recordem."</em>
+        </p>
+        <span class="tronco-badge rv">🪵 &nbsp; Etern &nbsp;·&nbsp; Indestructible &nbsp;·&nbsp; Llegendari</span>
+    </div>
+</section>
+
+<!-- ══ EL JOC ══ -->
+<section class="game-sec">
+    <p class="s-eyebrow rv">// El Joc</p>
+    <h2 class="s-h2 rv">Tronco<br>o Huevo</h2>
+    <div class="s-rule rv"></div>
+    <p class="game-instr rv">Agafa els 🥚 · Esquiva els 🪵 · 30 segons · Fes tants punts com puguis</p>
+
+    <div class="game-hud rv">
+        <div class="hud-box"><span class="hud-lbl">Score</span><span class="hud-val score" id="gScore">0</span></div>
+        <div class="hud-box"><span class="hud-lbl">Vides</span><span class="hud-val" id="gLives">❤️❤️❤️</span></div>
+        <div class="hud-box"><span class="hud-lbl">Temps</span><span class="hud-val timer" id="gTime">30s</span></div>
+        <div class="hud-box"><span class="hud-lbl">Rècord</span><span class="hud-val" id="gHigh" style="color:var(--g)">0</span></div>
+    </div>
+
+    <div class="cv-wrap rv">
+        <canvas id="gameCanvas"></canvas>
+    </div>
+    <div class="game-dpad rv">
+        <button class="dpad-btn" id="gbL">◀</button>
+        <button class="dpad-btn" id="gbR">▶</button>
+    </div>
+    <p class="game-tip rv">Mou el dit pel canvas · ◀▶ per moure · Toca o ESPAI per jugar</p>
+</section>
+
+<!-- ══ STATS ══ -->
+<section class="stats">
+    <p class="s-eyebrow rv">// En Números</p>
+    <h2 class="s-h2 rv" style="background:linear-gradient(135deg,var(--g),var(--p2));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;">La Veritat,<br>documentada.</h2>
+    <div class="s-rule rv"></div>
+    <div class="stats-grid">
+        <div class="s-box rv d1"><span class="s-num">1</span><div class="s-lbl">Joc que ho va<br>canviar tot</div></div>
+        <div class="s-box rv d2"><span class="s-num">100%</span><div class="s-lbl">De la generació<br>hi ha jugat</div></div>
+        <div class="s-box rv d3"><span class="s-num">0</span><div class="s-lbl">Corones necessàries<br>per ser llegenda</div></div>
+        <div class="s-box rv d4"><span class="s-num">∞</span><div class="s-lbl">Moments<br>irrepetibles</div></div>
+    </div>
+</section>
+
+<!-- ══ VOTE ══ -->
+<section class="vote" id="vota">
+    <div class="vote-glow"></div>
+    <div class="vote-inner">
+        <p class="v-eyebrow rv">// El Moment de la Veritat</p>
+        <h2 class="v-title rv">VOTA<br>TESTICLE<br>TORÇADES</h2>
+        <p class="v-desc rv">Perquè sí.<br>Perquè va passar a les colònies.<br>Perquè ho vàreu viure tots junts.<br>Perquè cap altra generació<br>serà mai com vosaltres.</p>
+        <button class="v-btn rv" id="voteBtn" onclick="boom(this)">🥚 &nbsp; VOTA TESTICLETORÇADES &nbsp; 🥚</button>
+        <div class="v-footer rv">Generació 25-26 · Colla Trempats · UPF<br>"Tronco o Huevo?" &nbsp;→&nbsp; TESTICLETORÇADES.<br><br>——— Absolut Prime ———</div>
+    </div>
+</section>
+
+<script>
+/* ── CURSOR ── */
+const cur = document.getElementById('cur');
+document.addEventListener('mousemove', e => { cur.style.left=e.clientX+'px'; cur.style.top=e.clientY+'px'; });
+document.querySelectorAll('a,button,.card,.s-box,#gameCanvas').forEach(el => {
+    el.addEventListener('mouseenter', () => cur.classList.add('big'));
+    el.addEventListener('mouseleave', () => cur.classList.remove('big'));
+});
+
+/* ── CURTAIN ── */
+const curtain = document.getElementById('curtain');
+requestAnimationFrame(() => { document.getElementById('cbar').style.width='100%'; });
+setTimeout(() => curtain.classList.add('out'), 2100);
+
+/* ── STARS ── */
+const sc = document.getElementById('stars'), sx = sc.getContext('2d');
+let SW = sc.width=innerWidth, SH = sc.height=innerHeight;
+addEventListener('resize', () => { SW=sc.width=innerWidth; SH=sc.height=innerHeight; });
+const STARS = Array.from({length:130}, () => ({ x:Math.random()*SW, y:Math.random()*SH, r:Math.random()*1.1+.2, ph:Math.random()*Math.PI*2, sp:Math.random()*.007+.002 }));
+(function dS() {
+    sx.clearRect(0,0,SW,SH);
+    STARS.forEach(s => { s.ph+=s.sp; sx.beginPath(); sx.arc(s.x,s.y,s.r,0,Math.PI*2); sx.fillStyle=`rgba(255,255,255,${.12+.38*Math.abs(Math.sin(s.ph))})`; sx.fill(); });
+    requestAnimationFrame(dS);
+})();
+
+/* ── MARQUEE ── */
+const MW = [{t:'Testicletorçades',c:'g'},{t:'·',c:''},{t:'Tronco o Huevo',c:''},{t:'·',c:''},{t:'Picadura de Pato',c:'pk'},{t:'·',c:''},{t:'El Punt Lila',c:''},{t:'·',c:''},{t:'Xoxolocas',c:'pk'},{t:'·',c:''},{t:'Generació 25-26',c:''},{t:'·',c:''},{t:'Absolut Prime',c:'g'},{t:'·',c:''}];
+const mqEl = document.getElementById('mq');
+const mqH = MW.map(w => `<span class="mq-item ${w.c}">${w.t}</span>`).join('');
+mqEl.innerHTML = mqH + mqH;
+
+/* ── SCROLL REVEAL ── */
+const io = new IntersectionObserver(e => e.forEach(x => { if(x.isIntersecting) x.target.classList.add('v'); }), {threshold:.13});
+document.querySelectorAll('.rv,.m-line,.m-rule').forEach(el => io.observe(el));
+
+/* ══════════════════════════════════════
+   GAME — TRONCO O HUEVO
+══════════════════════════════════════ */
+(function() {
+    const cv    = document.getElementById('gameCanvas');
+    const ctx   = cv.getContext('2d');
+    const scoreEl = document.getElementById('gScore');
+    const livesEl = document.getElementById('gLives');
+    const timeEl  = document.getElementById('gTime');
+    const highEl  = document.getElementById('gHigh');
+
+    const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
+    let W, H;
+    function resize() {
+        const pw = cv.parentElement.clientWidth;
+        W = cv.width  = Math.min(700, pw - 2);
+        H = cv.height = Math.round(W * 0.54);
+        if(pl) { pl.x = W/2; pl.tx = W/2; }
+    }
+
+    let state = 'idle'; // idle | playing | over
+    let score=0, lives=3, timeLeft=30;
+    let objs=[], fx=[];
+    let spawnT=0, shakeF=0, flashF=0, flashCol='';
+    let hs = +localStorage.getItem('tthigh') || 0;
+    let keys = {};
+    let gameTimer = null, lastTs = 0;
+
+    const pl = { x:0, tx:0, w:44 };
+
+    highEl.textContent = hs;
+
+    /* Controls */
+    function posFromTouch(e) {
+        const r = cv.getBoundingClientRect();
+        return ((e.touches[0].clientX - r.left) / r.width) * W;
+    }
+    cv.addEventListener('mousemove', e => {
+        const r = cv.getBoundingClientRect();
+        pl.tx = ((e.clientX - r.left) / r.width) * W;
+    });
+    cv.addEventListener('touchstart', e => {
+        e.preventDefault();
+        pl.tx = posFromTouch(e);
+        tryStart();
+    }, {passive:false});
+    cv.addEventListener('touchmove', e => {
+        e.preventDefault();
+        pl.tx = posFromTouch(e);
+    }, {passive:false});
+    cv.addEventListener('click', tryStart);
+    document.addEventListener('keydown', e => {
+        keys[e.code] = true;
+        if(e.code==='Space' && state!=='playing') { e.preventDefault(); tryStart(); }
+    });
+    document.addEventListener('keyup', e => { keys[e.code]=false; });
+
+    /* D-pad buttons */
+    const gbL = document.getElementById('gbL');
+    const gbR = document.getElementById('gbR');
+    if (gbL) {
+        gbL.addEventListener('touchstart', e => { e.preventDefault(); keys['KeyA']=true;  tryStart(); }, {passive:false});
+        gbL.addEventListener('touchend',   e => { e.preventDefault(); keys['KeyA']=false; }, {passive:false});
+        gbR.addEventListener('touchstart', e => { e.preventDefault(); keys['KeyD']=true;  tryStart(); }, {passive:false});
+        gbR.addEventListener('touchend',   e => { e.preventDefault(); keys['KeyD']=false; }, {passive:false});
+    }
+
+    function tryStart() { if(state!=='playing') startGame(); }
+
+    function startGame() {
+        state='playing'; score=0; lives=3; timeLeft=30;
+        objs=[]; fx=[]; spawnT=0; shakeF=0; flashF=0;
+        pl.x=W/2; pl.tx=W/2;
+        scoreEl.textContent='0';
+        livesEl.textContent='❤️❤️❤️';
+        timeEl.textContent='30s';
+        clearInterval(gameTimer);
+        gameTimer = setInterval(() => {
+            if(state!=='playing') return;
+            timeLeft--;
+            timeEl.textContent = timeLeft+'s';
+            if(timeLeft<=0) endGame();
+        }, 1000);
+    }
+
+    function endGame() {
+        clearInterval(gameTimer);
+        state='over';
+        if(score>hs) { hs=score; localStorage.setItem('tthigh',hs); highEl.textContent=hs; }
+    }
+
+    function spawn() {
+        const egg = Math.random() < 0.62;
+        const speed = 2.4 + Math.random()*2.6 + (30-timeLeft)*0.09;
+        objs.push({ x:40+Math.random()*(W-80), y:-44, vy:speed, egg });
+    }
+
+    function update(dt) {
+        if(state!=='playing') return;
+
+        /* key move */
+        const sp = W * 0.008 * (dt/16);
+        if(keys['KeyA']||keys['ArrowLeft'])  pl.tx -= sp;
+        if(keys['KeyD']||keys['ArrowRight']) pl.tx += sp;
+        pl.tx = Math.max(pl.w, Math.min(W-pl.w, pl.tx));
+        pl.x += (pl.tx-pl.x)*0.16;
+
+        /* spawn */
+        spawnT += dt;
+        const interval = Math.max(420, 1080-(30-timeLeft)*16);
+        if(spawnT >= interval) { spawnT=0; spawn(); }
+
+        /* objects */
+        const gY = H-64;
+        objs = objs.filter(o => {
+            o.y += o.vy;
+            if(Math.abs(o.y-gY)<20 && Math.abs(o.x-pl.x)<pl.w+14) {
+                if(o.egg) {
+                    score++;
+                    scoreEl.textContent = score;
+                    flashF=8; flashCol='rgba(124,58,237,0.22)';
+                    fx.push({x:o.x, y:gY-16, t:45, text:'+1', col:'#A78BFA'});
+                } else {
+                    lives = Math.max(0,lives-1);
+                    livesEl.textContent = '❤️'.repeat(lives)+'🖤'.repeat(3-lives);
+                    shakeF=14; flashF=12; flashCol='rgba(236,72,153,0.28)';
+                    fx.push({x:o.x, y:gY-16, t:45, text:'AU!', col:'#EC4899'});
+                    if(lives<=0) endGame();
+                }
+                return false;
+            }
+            return o.y < H+50;
+        });
+        fx = fx.filter(e => { e.t--; e.y-=1.5; return e.t>0; });
+        if(shakeF>0) shakeF--;
+        if(flashF>0) flashF--;
+    }
+
+    function draw() {
+        const ox = shakeF>0?(Math.random()-.5)*7:0;
+        const oy = shakeF>0?(Math.random()-.5)*7:0;
+        ctx.save();
+        ctx.translate(ox,oy);
+
+        /* BG */
+        const bg = ctx.createLinearGradient(0,0,0,H);
+        bg.addColorStop(0,'#07000f'); bg.addColorStop(1,'#040008');
+        ctx.fillStyle=bg; ctx.fillRect(-10,-10,W+20,H+20);
+
+        /* grid */
+        ctx.strokeStyle='rgba(124,58,237,0.05)'; ctx.lineWidth=1;
+        for(let x=0;x<W;x+=55){ctx.beginPath();ctx.moveTo(x,0);ctx.lineTo(x,H);ctx.stroke();}
+
+        /* ground */
+        const gY=H-64;
+        ctx.strokeStyle='rgba(124,58,237,0.45)'; ctx.lineWidth=2; ctx.setLineDash([9,4]);
+        ctx.beginPath(); ctx.moveTo(0,gY); ctx.lineTo(W,gY); ctx.stroke();
+        ctx.setLineDash([]);
+
+        /* flash */
+        if(flashF>0){ctx.fillStyle=flashCol;ctx.fillRect(-10,-10,W+20,H+20);}
+
+        /* ── IDLE ── */
+        if(state==='idle'){
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            ctx.font=`${Math.floor(H*.18)}px serif`;
+            ctx.fillText('🥚',W/2,H*.34);
+            ctx.fillStyle='rgba(255,255,255,.72)';
+            ctx.font=`bold ${Math.floor(H*.075)}px 'Arial Black',sans-serif`;
+            ctx.fillText(isMobile ? 'Toca per jugar' : 'Clica per jugar', W/2, H*.6);
+            ctx.fillStyle='rgba(167,139,250,.5)';
+            ctx.font=`${Math.floor(H*.052)}px 'Arial Black',sans-serif`;
+            ctx.fillText('🥚 Agafa ous   ·   Esquiva 🪵',W/2,H*.78);
+        }
+
+        /* ── PLAYING ── */
+        if(state==='playing'){
+            const sz = Math.floor(W*.065);
+            ctx.font=`${sz}px serif`; ctx.textAlign='center'; ctx.textBaseline='middle';
+            objs.forEach(o => ctx.fillText(o.egg?'🥚':'🪵', o.x, o.y));
+
+            /* player glow */
+            const grd = ctx.createRadialGradient(pl.x,gY+10,0,pl.x,gY+10,40);
+            grd.addColorStop(0,'rgba(124,58,237,0.4)'); grd.addColorStop(1,'transparent');
+            ctx.fillStyle=grd; ctx.fillRect(pl.x-44,gY-10,88,30);
+
+            /* player */
+            ctx.font=`${Math.floor(W*.08)}px serif`;
+            ctx.fillText('🧍',pl.x,gY);
+
+            /* pop fx */
+            fx.forEach(e => {
+                ctx.globalAlpha=e.t/45;
+                ctx.fillStyle=e.col;
+                ctx.font=`bold ${Math.floor(W*.038)}px 'Arial Black',sans-serif`;
+                ctx.textAlign='center'; ctx.textBaseline='middle';
+                ctx.fillText(e.text,e.x,e.y);
+                ctx.globalAlpha=1;
+            });
+        }
+
+        /* ── GAME OVER ── */
+        if(state==='over'){
+            ctx.fillStyle='rgba(0,0,0,0.75)'; ctx.fillRect(-10,-10,W+20,H+20);
+            ctx.textAlign='center'; ctx.textBaseline='middle';
+            ctx.fillStyle='#A78BFA';
+            ctx.font=`bold ${Math.floor(H*.12)}px 'Arial Black',sans-serif`;
+            ctx.fillText('GAME OVER',W/2,H*.2);
+
+            const eggStr='🥚'.repeat(Math.min(score,8));
+            ctx.font=`${Math.floor(H*.13)}px serif`;
+            ctx.fillText(eggStr,W/2,H*.4);
+
+            ctx.fillStyle='#fff';
+            ctx.font=`bold ${Math.floor(H*.1)}px 'Arial Black',sans-serif`;
+            ctx.fillText(`${score} ous agafats`,W/2,H*.6);
+
+            if(score>0 && score>=hs){
+                ctx.fillStyle='#F59E0B';
+                ctx.font=`bold ${Math.floor(H*.072)}px 'Arial Black',sans-serif`;
+                ctx.fillText('🏆 NOU RÈCORD!',W/2,H*.76);
+            }
+
+            ctx.fillStyle='rgba(255,255,255,.42)';
+            ctx.font=`${Math.floor(H*.056)}px 'Arial Black',sans-serif`;
+            ctx.fillText('Clica per tornar a jugar',W/2,H*.9);
+        }
+
+        ctx.restore();
+    }
+
+    resize();
+    window.addEventListener('resize', resize);
+    pl.x = pl.tx = W/2;
+
+    (function loop(ts){
+        const dt = Math.min(ts-lastTs, 50); lastTs=ts;
+        update(dt); draw();
+        requestAnimationFrame(loop);
+    })(0);
+})();
+
+/* ── VOTE BOOM ── */
+function boom(btn) {
+    const COLS=['#A78BFA','#EC4899','#F59E0B','#06B6D4','#fff','#7C3AED'];
+    const EMJS=['🥚','🪵','🟣','✨','💜','🔥'];
+    for(let i=0;i<90;i++){
+        const d=document.createElement('div');
+        const w=Math.random()*8+4, h=Math.random()*14+6;
+        const vx=(Math.random()-.5)*55, vy=-(55+Math.random()*90);
+        const rot=Math.random()*1080-540, dur=1.1+Math.random()*1.1;
+        const col=COLS[Math.floor(Math.random()*COLS.length)];
+        const id='cr'+Date.now()+i;
+        d.style.cssText=`position:fixed;z-index:9940;pointer-events:none;left:${38+Math.random()*24}vw;top:62vh;width:${w}px;height:${h}px;background:${col};border-radius:2px;animation:${id} ${dur}s cubic-bezier(0,.9,.57,1) forwards;`;
+        const st=document.createElement('style');
+        st.textContent=`@keyframes ${id}{0%{transform:translate(0,0) rotate(0deg);opacity:1}100%{transform:translate(${vx}vw,${vy}vh) rotate(${rot}deg);opacity:0}}`;
+        document.head.appendChild(st); document.body.appendChild(d);
+        setTimeout(()=>{d.remove();st.remove();},(dur+.1)*1000);
+    }
+    for(let i=0;i<45;i++){
+        const d=document.createElement('div');
+        const angle=Math.random()*360, dist=120+Math.random()*280;
+        const r=angle*Math.PI/180, tx=Math.cos(r)*dist, ty=Math.sin(r)*dist;
+        const dur=.8+Math.random()*.9, id='ej'+Date.now()+i;
+        d.style.cssText=`position:fixed;z-index:9941;pointer-events:none;left:50%;top:62%;font-size:${12+Math.random()*16}px;transform:translate(-50%,-50%);animation:${id} ${dur}s cubic-bezier(.25,.46,.45,.94) forwards;`;
+        d.textContent=EMJS[Math.floor(Math.random()*EMJS.length)];
+        const st=document.createElement('style');
+        st.textContent=`@keyframes ${id}{0%{transform:translate(-50%,-50%) scale(0);opacity:1}100%{transform:translate(calc(-50% + ${tx}px),calc(-50% + ${ty}px)) scale(1) rotate(${Math.random()*720-360}deg);opacity:0}}`;
+        document.head.appendChild(st); document.body.appendChild(d);
+        setTimeout(()=>{d.remove();st.remove();},(dur+.1)*1000);
+    }
+    btn.innerHTML='🎉 &nbsp; TESTICLETORÇADES!! &nbsp; 🎉';
+    btn.style.background='linear-gradient(135deg,#F59E0B,#EC4899)';
+    setTimeout(()=>{btn.innerHTML='🥚 &nbsp; VOTAT! GRÀCIES &nbsp; 🥚'; btn.style.background='linear-gradient(135deg,var(--p),var(--pk))';},1200);
+}
+</script>
+</body>
+</html>
