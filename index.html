@@ -358,7 +358,7 @@
         <div class="hud-box"><span class="hud-lbl">Rècord</span><span class="hud-val" id="gHigh" style="color:var(--g)">0</span></div>
     </div>
 
-    <div class="cv-wrap rv">
+    <div class="cv-wrap">
         <canvas id="gameCanvas"></canvas>
     </div>
     <div class="game-dpad rv">
@@ -442,7 +442,8 @@ document.querySelectorAll('.rv,.m-line,.m-rule').forEach(el => io.observe(el));
     const isMobile = 'ontouchstart' in window || navigator.maxTouchPoints > 0;
     let W, H;
     function resize() {
-        const pw = cv.parentElement.clientWidth;
+        const pw = cv.parentElement.clientWidth || window.innerWidth;
+        if (pw < 10) return; // not in DOM yet
         W = cv.width  = Math.min(700, pw - 2);
         H = cv.height = Math.round(W * 0.54);
         if(pl) { pl.x = W/2; pl.tx = W/2; }
@@ -659,15 +660,30 @@ document.querySelectorAll('.rv,.m-line,.m-rule').forEach(el => io.observe(el));
         ctx.restore();
     }
 
-    resize();
     window.addEventListener('resize', resize);
-    pl.x = pl.tx = W/2;
+    if (typeof ResizeObserver !== 'undefined') {
+        new ResizeObserver(() => resize()).observe(cv.parentElement);
+    }
 
-    (function loop(ts){
-        const dt = Math.min(ts-lastTs, 50); lastTs=ts;
+    function loop(ts) {
+        const dt = Math.min(ts - lastTs, 50); lastTs = ts;
+        if (!W) resize(); // safety: resize if still 0
         update(dt); draw();
         requestAnimationFrame(loop);
-    })(0);
+    }
+
+    // Wait until the canvas wrapper has real pixel dimensions
+    // (it may be 0 on load if the section hasn't painted yet)
+    function waitForSize() {
+        resize();
+        if (W > 10) {
+            pl.x = pl.tx = W / 2;
+            requestAnimationFrame(loop);
+        } else {
+            requestAnimationFrame(waitForSize);
+        }
+    }
+    requestAnimationFrame(waitForSize);
 })();
 
 /* ── VOTE BOOM ── */
